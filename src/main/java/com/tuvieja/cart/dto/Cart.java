@@ -23,7 +23,7 @@ public  class Cart {
 		return userId;
 	}
 	
-	public Collection<Product> getMensaje (){
+	public Collection<Product> getCartProducts (){
 		return products;
 	}
 }

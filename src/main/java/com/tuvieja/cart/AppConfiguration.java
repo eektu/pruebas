@@ -1,5 +1,6 @@
 package com.tuvieja.cart;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -10,14 +11,20 @@ import com.tuvieja.cart.service.CartService;
 @Configuration
 public class AppConfiguration {
 
+	@Value("${endpoints.apiGarba}")
+	private String apiGarba;
+	
+	@Value("${endpoints.apiCompu}")
+	private String apiCompu;
+	
 	@Bean
 	public RestConnector compumundoRestConnector() {
-		return new RestConnector("api-ci.compumundo.com", "");
+		return new RestConnector(apiCompu, "");
 	}
 
 	@Bean
 	public RestConnector garbaRestConnector() {
-		return RestConnectorBuilder.customRestConnector().withEndpoint("api-ci.garbarino.com").withConnectionTimeout(30)
+		return RestConnectorBuilder.customRestConnector().withEndpoint(apiGarba).withConnectionTimeout(30)
 				.withReadTimeout(30).build();
 	}
 

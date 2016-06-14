@@ -2,10 +2,11 @@ package com.tuvieja.cart.dao;
 
 import java.util.Collection;
 
-import org.jboss.logging.Property;
+import org.springframework.stereotype.Repository;
 
+import com.garbarino.monga.dao.BaseDao;
 import com.tuvieja.cart.dto.Cart;
-public class CartDao {
+public @Repository class CartDao extends BaseDao{
 //public @Entity(noClassnameStored = true, value = "shopping_cart") class CartDao {
 //	private @Id ObjectId id;
 //	private @Property("brand") String brand;

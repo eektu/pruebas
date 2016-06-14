@@ -1,0 +1,16 @@
+server:
+  port: 5000
+  context-path: 
+
+spring:
+  profiles: dev
+  
+endpoints:
+  apiGarba: api-ci.garbarino.com
+  apiCompu: api-ci.compumundo.com
+
+mongo:
+  endpoint: 10.27.50.83
+  user: 
+  password: 
+  database: cartDB
