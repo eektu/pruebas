@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import javax.annotation.Resource;
 
+import org.bson.types.ObjectId;
 import org.joda.time.DateTime;
 
 import com.tuvieja.cart.dao.CartDao;
@@ -19,8 +20,8 @@ import com.tuvieja.cart.dto.Cart;
 public class CartService {
 	private @Resource CartDao cd;
 
-	public Cart fetchOne(String cartId) {
-		return cd.fetchOne(cartId);
+	public Cart fetchOne(ObjectId id) {
+		return cd.fetchOne(id);
 	}
 
 	public Collection<Cart> fetchAll() {
@@ -34,24 +35,22 @@ public class CartService {
 		cd.createCart(cart);
 	}
 
-	public void buyCart(String cartId, Cart cart) {
+	public void buyCart(ObjectId id, Cart cart) {
 		// verificar que exista el carrito
 		// verificar que solo cambie el status (que lo hacemos acá)
-		if (cd.exists(cartId)) {
+		if (cd.exists(id)) {
 			cart.setCartStatus("cart boght");
-			cd.editCart(cartId, cart);
+			cd.editCart(id, cart);
 		}
 	}
 
-	public void editCart(String cartId, Cart cart) {
-		// verificar que exista el carrito
-		// no permitir que cambie el usuario,
-		cd.editCart(cartId, cart);
+	public void editCart(ObjectId id, Cart cart) {
+		cd.editCart(id, cart);
 	}
 
-	public void deleteCart(String cartId) {
-		if (cd.exists(cartId)) {
-			cd.deleteCart(cartId);
+	public void deleteCart(ObjectId id) {
+		if (cd.exists(id)) {
+			cd.deleteCart(id);
 		}
 	}
 

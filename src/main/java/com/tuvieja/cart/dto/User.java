@@ -10,23 +10,24 @@ import org.mongodb.morphia.annotations.Property;
 public @Entity(noClassnameStored = true, value = "Users") class User {
 	
 	private @Id ObjectId id;
-	private @Indexed String userId;
 	private @Indexed String nickName;
 	private @Property String name;
 	private @Indexed String email;
-	private @Property DateTime timeStamp;
+	private @Property DateTime signUpDate;
 	private @Property DateTime lastSeen;
 
 	public User() {
-		userId = "";
-		name = "";
+		this.name = "default name";
+		this.nickName = "default nick";
+		this.email = "default email";
 	}
 
-	public User(String userId, String name) {
-		this.userId = userId;
+	public User(ObjectId id, String name, String nickName, String email) {
+		this.id = id;
 		this.name = name;
+		this.nickName = nickName;
+		this.email = email;
 	}
-
 
 	public ObjectId getId() {
 		return id;
@@ -53,11 +54,11 @@ public @Entity(noClassnameStored = true, value = "Users") class User {
 	}
 
 	public DateTime getTimeStamp() {
-		return timeStamp;
+		return signUpDate;
 	}
 
 	public void setTimeStamp(DateTime timeStamp) {
-		this.timeStamp = timeStamp;
+		this.signUpDate = timeStamp;
 	}
 
 	public DateTime getLastSeen() {
@@ -68,16 +69,8 @@ public @Entity(noClassnameStored = true, value = "Users") class User {
 		this.lastSeen = lastSeen;
 	}
 
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
-
 	public void setName(String name) {
 		this.name = name;
-	}
-	
-	public String getUserId() {
-		return userId;
 	}
 
 	public String getName() {

@@ -1,27 +1,27 @@
 package com.tuvieja.cart.dto;
 
 public class Product {
-	private String productId;
+	private String garbaId;
 	private String description;
 	private float price;
 	private Image mainImage;
 
 	public Product() {
-		this.productId = "";
+		this.garbaId = "";
 		this.description = "default";
 		this.price = 0f;
 		this.mainImage = new Image();
 	}
 
-	public Product(String productId, String description, float price, Image mainImage) {
-		this.productId = productId;
+	public Product(String garbaId, String description, float price, Image mainImage) {
+		this.garbaId = garbaId;
 		this.description = description;
 		this.price = price;
 		this.mainImage = mainImage;
 	}
 
-	public void setProductId(String productId) {
-		this.productId = productId;
+	public void setProductId(String garbaId) {
+		this.garbaId = garbaId;
 	}
 
 	public void setDescription(String description) {
@@ -36,8 +36,8 @@ public class Product {
 		this.mainImage = mainImage;
 	}
 
-	public String getProductId() {
-		return productId;
+	public String getGarbaId() {
+		return garbaId;
 	}
 
 	public float getPrice() {

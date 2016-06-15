@@ -1,57 +1,47 @@
 package com.tuvieja.cart.controller;
 
-import org.springframework.web.bind.annotation.RestController;
-
-import com.garbarino.gcommons.rest.impl.RestConnector;
-import com.garbarino.gcommons.serializers.Serializers;
-import com.tuvieja.cart.dto.User;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 
+import javax.annotation.Resource;
+
+import org.bson.types.ObjectId;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.tuvieja.cart.dto.User;
+import com.tuvieja.cart.service.CartService;
 
 
 @RestController
 @RequestMapping(value="/users")
 public class UserController {
-	private ArrayList <User> users;
+	private @Resource UserService us;
 
     @RequestMapping(method = RequestMethod.GET)
     public ArrayList<User> fetchAll() {
-    	//RestConnector c = new RestConnector("api-prod.garbarino.com","");
-    	//Serializers.json(User.class).toString()
-    	//c.prepareGet("users").execute().getBody()
         return users;
     }
     
     @RequestMapping(method = RequestMethod.GET, value="{id}")
-    public String fetchOne (@PathVariable ("id") String userId){
-    	String response = "";
-    	response = "usuario loco: " + userId;
+    public String fetchOne (@PathVariable ("id") ObjectId id){
     	return response;
     }
     
     @RequestMapping(method = RequestMethod.POST)
     public String addUser (@RequestBody User user){
-    	String response = "";
-    	//String r = c.preparePost("users").withBody("").execute().getBody();
-    	//Serializers.json(User.class).toString()
     	return response;
     }
     
     @RequestMapping (method = RequestMethod.PUT, value="{id}")
-    public String editUser (@PathVariable ("id") String userId, @RequestBody User user){
-    	String response = "";
+    public String editUser (@PathVariable ("id") ObjectId id, @RequestBody User user){
     	return response;
     }
     
     @RequestMapping (method = RequestMethod.DELETE, value="{id}")
-    public String removeUser (@PathVariable ("id") String userId){
-    	String response = "";
+    public String removeUser (@PathVariable ("id") ObjectId id){
     	return response;
     }
 }

@@ -8,10 +8,14 @@ import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 import org.mongodb.morphia.annotations.Indexed;
 import org.mongodb.morphia.annotations.Property;
+
+/*
+ * cartStatus: {"cart created", "cart updated", "cart bought"}
+ */
+
 public @Entity(noClassnameStored = true, value = "Carts") class Cart {
 	
 	private @Id ObjectId id;
-	private @Indexed String cartId;
 	private @Indexed String userId;
 	private Collection<Product> products;
 	private @Property DateTime timeStamp;
@@ -20,8 +24,7 @@ public @Entity(noClassnameStored = true, value = "Carts") class Cart {
 	public Cart (){
 	}
 	
-	public Cart (String cartId, String userId){
-		this.cartId = cartId;
+	public Cart (String userId){
 		this.userId = userId;
 	}
 
@@ -32,17 +35,9 @@ public @Entity(noClassnameStored = true, value = "Carts") class Cart {
 	public DateTime getTimeStamp() {
 		return timeStamp;
 	}
-	
-	public String getId (){
-		return cartId;
-	}
 
 	public String getUserId (){
 		return userId;
-	}
-	
-	public void setCartId(String cartId) {
-		this.cartId = cartId;
 	}
 	
 	public void setUserId(String userId) {
@@ -68,10 +63,6 @@ public @Entity(noClassnameStored = true, value = "Carts") class Cart {
 
 	public void setCartStatus(String cartStatus) {
 		this.cartStatus = cartStatus;
-	}
-
-	public String getCartId() {
-		return cartId;
 	}
 
 	public void setId(ObjectId id) {
