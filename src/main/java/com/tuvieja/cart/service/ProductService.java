@@ -33,11 +33,10 @@ public class ProductService {
 	}
 	
 	public void editProduct (String productId, Product updatedProduct){
-		GarbaProduct gp = new GarbaProduct ();
-		pc.editProduct (productId, updatedProduct);
+		pc.editProduct (productId, ProductTransform.toGarba(updatedProduct));
 	}
 	
 	public void createProduct (Product newProduct){
-		pc.createProduct(newProduct);
+		pc.createProduct(ProductTransform.toGarba(newProduct));
 	}
 }

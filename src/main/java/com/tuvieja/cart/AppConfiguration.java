@@ -8,6 +8,8 @@ import org.springframework.context.annotation.Configuration;
 import com.garbarino.gcommons.rest.RestConnectorBuilder;
 import com.garbarino.gcommons.rest.impl.RestConnector;
 import com.tuvieja.cart.service.CartService;
+import com.tuvieja.cart.service.ProductService;
+import com.tuvieja.cart.service.UserService;
 
 @Configuration
 @ComponentScan({"com.garbarino.monga.*"})
@@ -26,7 +28,9 @@ public class AppConfiguration {
 
 	@Bean
 	public RestConnector garbaRestConnector() {
-		return RestConnectorBuilder.customRestConnector().withEndpoint(apiGarba).withConnectionTimeout(30)
+		return RestConnectorBuilder.customRestConnector()
+				.withEndpoint(apiGarba)
+				.withConnectionTimeout(30)
 				.withReadTimeout(30).build();
 	}
 
@@ -34,6 +38,15 @@ public class AppConfiguration {
 	@Bean
 	public CartService cartService() {
 		return new CartService();
-
+	}
+	
+	@Bean
+	public UserService userService() {
+		return new UserService();
+	}
+	
+	@Bean
+	public ProductService productService() {
+		return new ProductService();
 	}
 }

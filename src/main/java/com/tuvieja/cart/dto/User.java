@@ -53,11 +53,11 @@ public @Entity(noClassnameStored = true, value = "Users") class User {
 		this.email = email;
 	}
 
-	public DateTime getTimeStamp() {
+	public DateTime getSignUpDate() {
 		return signUpDate;
 	}
 
-	public void setTimeStamp(DateTime timeStamp) {
+	public void setSignUpDate(DateTime timeStamp) {
 		this.signUpDate = timeStamp;
 	}
 

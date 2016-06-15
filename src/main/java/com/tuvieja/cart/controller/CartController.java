@@ -47,7 +47,7 @@ public class CartController {
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE, value = "{id}")
-	public void removeCart(@PathVariable("id") ObjectId id) {
+	public void deleteCart(@PathVariable("id") ObjectId id) {
 		if (hasValidId (id)){
 			cs.deleteCart(id);
 		}

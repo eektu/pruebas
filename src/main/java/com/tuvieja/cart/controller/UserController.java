@@ -1,6 +1,6 @@
 package com.tuvieja.cart.controller;
 
-import java.util.ArrayList;
+import java.util.Collection;
 
 import javax.annotation.Resource;
 
@@ -12,36 +12,47 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tuvieja.cart.dto.User;
-import com.tuvieja.cart.service.CartService;
-
+import com.tuvieja.cart.service.UserService;
 
 @RestController
-@RequestMapping(value="/users")
+@RequestMapping(value = "/users")
 public class UserController {
 	private @Resource UserService us;
 
-    @RequestMapping(method = RequestMethod.GET)
-    public ArrayList<User> fetchAll() {
-        return users;
-    }
-    
-    @RequestMapping(method = RequestMethod.GET, value="{id}")
-    public String fetchOne (@PathVariable ("id") ObjectId id){
-    	return response;
-    }
-    
-    @RequestMapping(method = RequestMethod.POST)
-    public String addUser (@RequestBody User user){
-    	return response;
-    }
-    
-    @RequestMapping (method = RequestMethod.PUT, value="{id}")
-    public String editUser (@PathVariable ("id") ObjectId id, @RequestBody User user){
-    	return response;
-    }
-    
-    @RequestMapping (method = RequestMethod.DELETE, value="{id}")
-    public String removeUser (@PathVariable ("id") ObjectId id){
-    	return response;
-    }
+	@RequestMapping(method = RequestMethod.GET)
+	public Collection<User> fetchAll() {
+		return us.fetchAll();
+	}
+
+	@RequestMapping(method = RequestMethod.GET, value = "{id}")
+	public User fetchOne(@PathVariable("id") ObjectId id) {
+		if (hasValidId(id)) {
+			return us.fetchOne(id);
+		}
+		return new User();
+	}
+
+	@RequestMapping(method = RequestMethod.POST)
+	public void createUser(@RequestBody User user) {
+		us.createUser(user);
+	}
+
+	@RequestMapping(method = RequestMethod.PUT, value = "{id}")
+	public void editCart(@PathVariable("id") ObjectId id, @RequestBody User user) {
+		if (hasValidId(id))
+			us.editUser(id, user);
+	}
+
+	@RequestMapping(method = RequestMethod.DELETE, value = "{id}")
+	public void deleteUser(@PathVariable("id") ObjectId id) {
+		if (hasValidId(id))
+			us.deleteUser(id);
+	}
+
+	// ver como convertir todo a Optionals para mandar un 404
+	private Boolean hasValidId(ObjectId id) {
+		if (id != null && !"".equals(id))
+			return true;
+		return false;
+	}
 }

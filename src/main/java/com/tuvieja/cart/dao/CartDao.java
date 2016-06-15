@@ -19,7 +19,6 @@ public @Repository class CartDao extends BaseDao<Cart, String> {
 
 	public boolean exists(ObjectId id) {
 		if (fetchOne(id) != null) {
-			System.out.println(fetchOne(id).getUserId());
 			return true;
 		}
 		return false;
