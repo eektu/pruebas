@@ -1,27 +1,38 @@
 package com.tuvieja.cart.dao;
 
-import java.util.Collection;
-
+import org.mongodb.morphia.Datastore;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.garbarino.monga.dao.BaseDao;
 import com.tuvieja.cart.dto.Cart;
-public @Repository class CartDao extends BaseDao{
-//public @Entity(noClassnameStored = true, value = "shopping_cart") class CartDao {
-//	private @Id ObjectId id;
-//	private @Property("brand") String brand;
-//	
-	public Cart fetchOne (String cartId){
-		return null;
+
+public @Repository class CartDao extends BaseDao<Cart, String> {
+
+	@Autowired
+	public CartDao(Datastore ds) {
+		super(Cart.class, ds);
 	}
-	
-	public Collection<Cart> fetchAll (){
-		return null;
+
+	public boolean exists(String cartId) {
+		if (fetchOne(cartId) != null) {
+			System.out.println(fetchOne(cartId).getUserId());
+			return true;
+		}
+		return false;
 	}
-	
-	public void createCart (Cart cart){}
-	
-	public void editCart (String cartId, Cart cart){}
-	
-	public void deleteCart (String cartId){}
+
+	public Cart fetchOne(String cartId) {
+		return getDs().find(Cart.class).field("cartId").equalIgnoreCase(cartId).get();
+	}
+
+	public void createCart(Cart cart) {
+		this.save(cart);
+	}
+
+	public void editCart(String cartId, Cart cart) {
+	}
+
+	public void deleteCart(String cartId) {
+	}
 }

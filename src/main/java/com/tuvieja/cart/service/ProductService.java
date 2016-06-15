@@ -1,11 +1,13 @@
 package com.tuvieja.cart.service;
 
 import java.util.Collection;
+import java.util.List;
 
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import com.google.common.collect.Lists;
 import com.tuvieja.cart.client.ProductClient;
 import com.tuvieja.cart.dto.Product;
 

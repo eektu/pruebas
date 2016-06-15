@@ -36,6 +36,11 @@
 			<artifactId>gcommons</artifactId>
 			<version>0.0.21</version>
 		</dependency>
+        <dependency>
+			<groupId>com.garbarino</groupId>
+			<artifactId>mapi-commons</artifactId>
+			<version>0.0.3</version>
+		</dependency>
 		<dependency>
 			<groupId>com.garbarino</groupId>
 			<artifactId>monga</artifactId>

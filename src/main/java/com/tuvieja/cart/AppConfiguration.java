@@ -2,6 +2,7 @@ package com.tuvieja.cart;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 import com.garbarino.gcommons.rest.RestConnectorBuilder;
@@ -9,6 +10,7 @@ import com.garbarino.gcommons.rest.impl.RestConnector;
 import com.tuvieja.cart.service.CartService;
 
 @Configuration
+@ComponentScan({"com.garbarino.monga.*"})
 public class AppConfiguration {
 
 	@Value("${endpoints.apiGarba}")

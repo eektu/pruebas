@@ -2,18 +2,18 @@ package com.tuvieja.cart.dtoapi;
 
 import java.awt.Image;
 
-public class Product {
+public class GarbaProduct {
 	private String xid;
 	private String description;
 	private float price;
 	private Image mainImage;
 	
-	public Product (){
+	public GarbaProduct (){
 		this.xid = "";
 		this.price = 0f;
 	}
 	
-	public Product (String xid, String description, float price, Image mainImage){
+	public GarbaProduct (String xid, String description, float price, Image mainImage){
 		this.xid = xid;
 		this.description = description;
 		this.price = price;
