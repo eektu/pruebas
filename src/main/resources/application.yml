@@ -10,7 +10,8 @@ endpoints:
   apiCompu: api-ci.compumundo.com
 
 mongo:
-  endpoint: 10.27.50.83
+#  endpoint: 10.27.50.83
+  endpoint: localhost
   user: 
   password: 
   database: cartDB

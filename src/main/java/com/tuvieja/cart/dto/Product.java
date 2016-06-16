@@ -1,6 +1,7 @@
 package com.tuvieja.cart.dto;
 
 public class Product {
+
 	private String garbaId;
 	private String description;
 	private float price;
@@ -10,7 +11,6 @@ public class Product {
 		this.garbaId = "";
 		this.description = "default";
 		this.price = 0f;
-		this.mainImage = new Image();
 	}
 
 	public Product(String garbaId, String description, float price, Image mainImage) {

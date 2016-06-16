@@ -24,9 +24,9 @@ public @Repository class CartDao extends BaseDao<Cart, String> {
 		return false;
 	}
 
-	public Collection<Cart> fetchSome(String userId, String status) {
+	public Collection<Cart> fetchByStatus(ObjectId id, String status) {
 		return getDs().find(Cart.class)
-				.field("userId").equalIgnoreCase(userId)
+				.field("id").equalIgnoreCase(id)
 				.field("cart_status").equalIgnoreCase(status)
 				.asList();
 	}

@@ -1,20 +1,18 @@
 package com.tuvieja.cart.dtoapi;
 
-import com.tuvieja.cart.dto.Image;
-
 public class GarbaProduct {
 	
 	private String xid;
 	private String description;
 	private float price;
-	private Image mainImage;
+	private GarbaImage mainImage;
 	
 	public GarbaProduct (){
 		this.xid = "";
 		this.price = 0f;
 	}
 	
-	public GarbaProduct (String xid, String description, float price, Image mainImage){
+	public GarbaProduct (String xid, String description, float price, GarbaImage mainImage){
 		this.xid = xid;
 		this.description = description;
 		this.price = price;
@@ -37,7 +35,7 @@ public class GarbaProduct {
 		this.price = price;
 	}
 
-	public void setMainImage(Image mainImage) {
+	public void setMainImage(GarbaImage mainImage) {
 		this.mainImage = mainImage;
 	}
 
@@ -53,7 +51,7 @@ public class GarbaProduct {
 		return description;
 	}
 	
-	public Image getMainImage (){
+	public GarbaImage getMainImage (){
 		return mainImage;
 	}
 }

@@ -1,6 +1,7 @@
 package com.tuvieja.cart.dao;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.bson.types.ObjectId;
 import org.joda.time.DateTime;
@@ -17,18 +18,12 @@ public @Repository class UserDao extends BaseDao<User, String> {
 	public UserDao(Datastore ds) {
 		super(User.class, ds);
 	}
-
+	
 	public boolean exists(ObjectId id) {
 		if (fetchOne(id) != null) {
 			return true;
 		}
 		return false;
-	}
-
-	public Collection<User> fetchSome(String userId, String status) {
-		return getDs().find(User.class)
-				.field("userId").equalIgnoreCase(userId)
-				.asList();
 	}
 
 	public User fetchOne(ObjectId id) {

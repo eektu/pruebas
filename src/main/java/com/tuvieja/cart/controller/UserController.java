@@ -21,6 +21,7 @@ public class UserController {
 
 	@RequestMapping(method = RequestMethod.GET)
 	public Collection<User> fetchAll() {
+		System.out.println("{USERS} fetchAll en CONTROLLER");
 		return us.fetchAll();
 	}
 

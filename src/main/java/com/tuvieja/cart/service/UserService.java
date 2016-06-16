@@ -25,6 +25,7 @@ public class UserService {
 	}
 
 	public Collection<User> fetchAll() {
+		System.out.println("{USERS} fetchAll en SERVICE");
 		return ud.fetchAll();
 	}
 
@@ -53,13 +54,4 @@ public class UserService {
 			ud.deleteUser(id);
 		}
 	}
-
-	// public float getDiscount (String cartId) {
-	// Cart cart = fetchOne (cartId);
-	// float discount = 0f;
-	// for (Product p : cart.getCartProducts()){
-	// discount += Math.random() * p.getPrice();
-	// }
-	// return discount;
-	// }
 }

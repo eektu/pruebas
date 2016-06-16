@@ -39,7 +39,7 @@ public class CartService {
 		// verificar que exista el carrito
 		// verificar que solo cambie el status (que lo hacemos acá)
 		if (cd.exists(id)) {
-			cart.setCartStatus("cart boght");
+			cart.setCartStatus("cart bought");
 			cd.editCart(id, cart);
 		}
 	}
