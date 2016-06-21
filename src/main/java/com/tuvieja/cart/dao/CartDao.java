@@ -17,13 +17,6 @@ public @Repository class CartDao extends BaseDao<Cart, String> {
 		super(Cart.class, ds);
 	}
 
-	public boolean exists(ObjectId id) {
-		if (fetchOne(id) != null) {
-			return true;
-		}
-		return false;
-	}
-
 	public Collection<Cart> fetchByStatus(ObjectId id, String status) {
 		return getDs().find(Cart.class)
 				.field("id").equalIgnoreCase(id)
@@ -52,5 +45,12 @@ public @Repository class CartDao extends BaseDao<Cart, String> {
 	public void deleteCart(ObjectId id) {
 		Cart doomedCart = fetchOne(id);
 		getDs().delete(doomedCart);
+	}
+
+	public boolean exists(ObjectId id) {
+		if (fetchOne(id) != null) {
+			return true;
+		}
+		return false;
 	}
 }

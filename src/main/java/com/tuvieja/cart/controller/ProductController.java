@@ -11,10 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.tuvieja.cart.dto.Image;
 import com.tuvieja.cart.dto.Product;
 import com.tuvieja.cart.service.ProductService;
-
 
 
 @RestController
@@ -28,22 +26,7 @@ public class ProductController {
     }
     
     @RequestMapping(method = RequestMethod.GET, value="{id}")
-    public Product fetchOne (@PathVariable ("id") ObjectId productId){
+    public Product fetchOne (@PathVariable ("id") String productId){
     	return ps.fetchOne(productId);
-    }
-    
-    @RequestMapping(method = RequestMethod.POST)
-    public void createProduct (@RequestBody Product product){
-    	ps.createProduct (product);
-    }
-    
-    @RequestMapping (method = RequestMethod.PUT, value="{id}")
-    public void editProduct (@PathVariable ("id") ObjectId productId, @RequestBody Product product){
-    	ps.editProduct(productId, product);
-    }
-    
-    @RequestMapping (method = RequestMethod.DELETE, value="{id}")
-    public void deleteProduct (@PathVariable ("id") ObjectId productId){
-    	ps.deleteProduct(productId);
     }
 }

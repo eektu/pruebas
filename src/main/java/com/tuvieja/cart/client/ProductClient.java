@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 
 import com.garbarino.gcommons.rest.impl.RestConnector;
@@ -17,31 +16,17 @@ public class ProductClient {
 
 	private @Resource RestConnector garbaRestConnector;
 	
-	public Collection<GarbaProduct> getAllProducts (){
+	public Collection<GarbaProduct> fetchAll (){
     	String r = garbaRestConnector.prepareGet("products").execute().getBody();
     	return Serializers.json(GarbaProduct.class).listFromString(r);
 	}
 	
-	public GarbaProduct getProduct (ObjectId productId){
-		System.out.println("obteniendo producto: " + productId.toString());
-		String r = garbaRestConnector.prepareGet("products").withParam("xid", productId.toString()).execute().getBody();
-		return ((List<GarbaProduct>) Serializers.json(GarbaProduct.class).listFromString(r)).get(0);
-	}
-	
-	public void removeProduct (ObjectId productId){
-		//	!!! VER SI ESTA BIEN ARMADO EL REQUEST
-		//garbaRestConnector.prepareDelete("products").withPathParam("xid", productId).execute();
-	}
-	
-	public void editProduct (ObjectId productId, GarbaProduct updatedProduct){
-		//	!!! VER SI ESTA BIEN ARMADO EL REQUEST
-		String json = Serializers.json(GarbaProduct.class).toString(updatedProduct);
-		//garbaRestConnector.preparePut("products").withPathParam("xid", productId).withBody(json);
-	}
-	
-	public void createProduct (GarbaProduct newProduct){
-		//	!!! VER SI ESTA BIEN ARMADO EL REQUEST
-		String json = Serializers.json(GarbaProduct.class).toString(newProduct);
-		//garbaRestConnector.preparePost("products").withBody(json);
+	public GarbaProduct fetchOne (String productId){
+		System.out.println("obteniendo producto: " + productId);
+		String r = garbaRestConnector.prepareGet("products/" + productId)
+				.execute()
+				.getBody();
+		//System.out.println(r);
+		return Serializers.json(GarbaProduct.class).fromString(r);
 	}
 }
