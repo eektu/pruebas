@@ -26,7 +26,8 @@ public class UserController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "{id}")
-	public User fetchOne(@PathVariable("id") ObjectId id) {
+	public User fetchOne(@PathVariable("id") String id) {
+		System.out.println("{USERS} accessing user @ USERCONTROLLER");
 		if (hasValidId(id)) {
 			return us.fetchOne(id);
 		}
@@ -35,23 +36,24 @@ public class UserController {
 
 	@RequestMapping(method = RequestMethod.POST)
 	public void createUser(@RequestBody User user) {
+		System.out.println("{USERS} creating user (" + user.getNickName() + ") @ USERCONTROLLER");
 		us.createUser(user);
 	}
 
 	@RequestMapping(method = RequestMethod.PUT, value = "{id}")
-	public void editCart(@PathVariable("id") ObjectId id, @RequestBody User user) {
+	public void editCart(@PathVariable("id") String id, @RequestBody User user) {
 		if (hasValidId(id))
 			us.editUser(id, user);
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE, value = "{id}")
-	public void deleteUser(@PathVariable("id") ObjectId id) {
+	public void deleteUser(@PathVariable("id") String id) {
 		if (hasValidId(id))
 			us.deleteUser(id);
 	}
 
 	// ver como convertir todo a Optionals para mandar un 404
-	private Boolean hasValidId(ObjectId id) {
+	private Boolean hasValidId(String id) {
 		if (id != null && !"".equals(id))
 			return true;
 		return false;

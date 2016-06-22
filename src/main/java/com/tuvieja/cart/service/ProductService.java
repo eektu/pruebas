@@ -27,4 +27,8 @@ public class ProductService {
 		GarbaProduct gp = pc.fetchOne(productId);
 		return ProductTransform.fromGarba(gp);
 	}
+	
+	public boolean itExists (String productId){
+		return pc.itExists (productId);
+	}
 }

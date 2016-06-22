@@ -4,7 +4,6 @@ import java.util.Collection;
 
 import javax.annotation.Resource;
 
-import org.bson.types.ObjectId;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +11,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tuvieja.cart.dto.Cart;
+import com.tuvieja.cart.dto.CartLite;
+import com.tuvieja.cart.dto.Generic;
+import com.tuvieja.cart.dto.Product;
 import com.tuvieja.cart.service.CartService;
 
 @RestController
@@ -25,11 +27,11 @@ public class CartController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "{id}")
-	public Cart fetchOne(@PathVariable("id") ObjectId id) {
-		if (hasValidId(id)) {
-			return cs.fetchOne(id);
+	public CartLite fetchOne(@PathVariable("id") String cartId) {
+		if (hasValidId(cartId)) {
+			return cs.fetchOneLite(cartId);
 		}
-		return new Cart();
+		return new CartLite();
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
@@ -40,29 +42,44 @@ public class CartController {
 	}
 
 	@RequestMapping(method = RequestMethod.PUT, value = "{id}")
-	public void editCart(@PathVariable("id") ObjectId id, @RequestBody Cart cart) {
-		if (hasValidId(id) && hasUserId(cart)) {
-			cs.editCart(id, cart);
+	public void editCart(@PathVariable("id") String cartId, @RequestBody Cart cart) {
+		if (hasValidId(cartId) && hasUserId(cart)) {
+			cs.editCart(cartId, cart);
 		}
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE, value = "{id}")
-	public void deleteCart(@PathVariable("id") ObjectId id) {
-		if (hasValidId (id)){
-			cs.deleteCart(id);
+	public void deleteCart(@PathVariable("id") String cartId) {
+		if (hasValidId(cartId)) {
+			cs.deleteCart(cartId);
 		}
 	}
 
-	//ver como convertir todo a Optionals para mandar un 404
-	private Boolean hasValidId(ObjectId id) {
+	@RequestMapping(method = RequestMethod.GET, value = "{id}/items")
+	public Collection<Product> fetchAllItems(@PathVariable("id") String cartId) {
+		System.out.println ("{CARTS} fetching all items in cart (" + cartId + ") @ CARTCONTROLLER");
+		return cs.fetchAllItems(cartId);
+	}
+	
+	@RequestMapping(method = RequestMethod.POST, value = "{id}/items")
+	public void addItemToCart(@PathVariable("id") String cartId, @RequestBody Generic product) {
+		System.out.println("{CARTS} adding product (" + product.getGarbaProduct() + ") @ CARTCONTROLLER");
+		//a ver si explota sin serializar..
+		if (hasValidId(cartId) && hasValidId(product.getGarbaProduct())) {
+			cs.addToCart(cartId, product.getGarbaProduct());
+		}
+	}
+
+	// ver como convertir todo a Optionals para mandar un 404
+	private boolean hasValidId(String id) {
 		if (id != null && !"".equals(id)) {
 			return true;
 		}
 		return false;
 	}
 
-	//ver como convertir todo a Optionals para mandar un 404
-	private Boolean hasUserId(Cart cart) {
+	// ver como convertir todo a Optionals para mandar un 404
+	private boolean hasUserId(Cart cart) {
 		if (cart.getUserId() != null && !"".equals(cart.getUserId())) {
 			return true;
 		}

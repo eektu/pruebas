@@ -1,9 +1,11 @@
 package com.tuvieja.cart.dto;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 import org.bson.types.ObjectId;
-import org.joda.time.DateTime;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 import org.mongodb.morphia.annotations.Indexed;
@@ -14,43 +16,53 @@ import org.mongodb.morphia.annotations.Property;
  */
 
 public @Entity(noClassnameStored = true, value = "Carts") class Cart {
-	
+
 	private @Id ObjectId id;
 	private @Indexed String userId;
 	private Collection<Product> products;
-	private @Property DateTime timeStamp;
+	private @Property Date timeStamp;
 	private @Property String cartStatus;
-	
-	public Cart (){
+
+	public Cart() {
+		this.products = new ArrayList<Product>();
 	}
-	
-	public Cart (String userId){
+
+	public Cart(String userId) {
 		this.userId = userId;
 	}
 
-	public void setTimeStamp(DateTime timeStamp) {
+	public void addToCart(Product p) {
+		products.add(p);
+	}
+
+	public void setTimeStamp(Date timeStamp) {
 		this.timeStamp = timeStamp;
 	}
-	
-	public DateTime getTimeStamp() {
+
+	public Date getTimeStamp() {
+		// SimpleDateFormat sdf = new SimpleDateFormat ("yyyy-MM-dd HH:mm:ss");
+		// return sdf.format(timeStamp);
 		return timeStamp;
 	}
 
-	public String getUserId (){
+	public String getUserId() {
 		return userId;
 	}
-	
+
 	public void setUserId(String userId) {
 		this.userId = userId;
+	}
 
-	}
-	
-	public Collection<Product> getCartProducts (){
+	public Collection<Product> getProductsFull() {
 		return products;
 	}
-	
-	public Collection<Product> getProducts() {
-		return products;
+
+	public Collection<String> getProductsSummary() {
+		ArrayList<String> s = new ArrayList<String>();
+		for (Product p : products) {
+			s.add(p.getGarbaId());
+		}
+		return s;
 	}
 
 	public void setProducts(Collection<Product> products) {
@@ -67,5 +79,9 @@ public @Entity(noClassnameStored = true, value = "Carts") class Cart {
 
 	public void setId(ObjectId id) {
 		this.id = id;
+	}
+
+	public ObjectId getId() {
+		return id;
 	}
 }

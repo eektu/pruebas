@@ -1,10 +1,10 @@
 package com.tuvieja.cart.client;
 
 import java.util.Collection;
-import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 
 import com.garbarino.gcommons.rest.impl.RestConnector;
@@ -26,7 +26,14 @@ public class ProductClient {
 		String r = garbaRestConnector.prepareGet("products/" + productId)
 				.execute()
 				.getBody();
-		//System.out.println(r);
+		System.out.println("{PRODUCTS} fetching product (" + productId + ") @ PRODUCTCLIENT");
 		return Serializers.json(GarbaProduct.class).fromString(r);
+	}
+
+	public boolean itExists(String productId) {
+		if (fetchOne (productId) != null){
+			return true;
+		}
+		return false;
 	}
 }

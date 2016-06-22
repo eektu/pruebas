@@ -2,6 +2,7 @@ package com.tuvieja.cart.service.utils;
 
 import com.tuvieja.cart.dto.Image;
 import com.tuvieja.cart.dto.Product;
+import com.tuvieja.cart.dto.ProductLite;
 import com.tuvieja.cart.dtoapi.GarbaImage;
 import com.tuvieja.cart.dtoapi.GarbaProduct;
 
@@ -13,6 +14,10 @@ public class ProductTransform {
 
 	public static Product fromGarba(GarbaProduct g) {
 		return new Product(g.getId(), g.getDescription(), g.getPrice(), fromGarba(g.getMainImage()));
+	}
+	
+	public static ProductLite fromProduct (Product p){
+		return new ProductLite (p.getGarbaId(), p.getDescription());
 	}
 
 	public static GarbaImage toGarba(Image i) {
