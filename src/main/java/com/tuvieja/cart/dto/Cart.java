@@ -1,6 +1,5 @@
 package com.tuvieja.cart.dto;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -19,20 +18,56 @@ public @Entity(noClassnameStored = true, value = "Carts") class Cart {
 
 	private @Id ObjectId id;
 	private @Indexed String userId;
-	private Collection<Product> products;
+	private Collection<CartItem> items;
 	private @Property Date timeStamp;
 	private @Property String cartStatus;
 
 	public Cart() {
-		this.products = new ArrayList<Product>();
+		this.items = new ArrayList<CartItem>();
 	}
 
 	public Cart(String userId) {
 		this.userId = userId;
 	}
 
-	public void addToCart(Product p) {
-		products.add(p);
+	public void removeAllFromCart(String productId) {
+		ArrayList<CartItem> newItems = new ArrayList<CartItem>();
+		for (CartItem c : items) {
+			if (!c.getProduct().getGarbaId().equals(productId)){
+				newItems.add(c);
+			}
+		}
+		this.items = newItems;
+	}
+	
+	public void removeSomeFromCart(String productId, int quantity) {
+		ArrayList<CartItem> newItems = new ArrayList<CartItem>();
+		for (CartItem c : items) {
+			if (c.getProduct().getGarbaId().equals(productId)){
+				if (c.getQuantity() > quantity){
+					c.setQuantity(c.getQuantity() + quantity);
+				}else{
+					c.setQuantity(0);;
+				}
+			}
+			if (c.getQuantity() > 0){
+				newItems.add(c);
+			}
+		}
+		this.items = newItems;
+	}
+
+	public void addToCart(CartItem ci) {
+		boolean edited = false;
+		for (CartItem c : items) {
+			if (c.getProduct().getGarbaId().equals(ci.getProduct().getGarbaId())){
+				c.setQuantity(c.getQuantity() + ci.getQuantity());
+				edited = true;
+			}
+		}
+		if (!edited){
+			items.add(ci);
+		}
 	}
 
 	public void setTimeStamp(Date timeStamp) {
@@ -40,8 +75,6 @@ public @Entity(noClassnameStored = true, value = "Carts") class Cart {
 	}
 
 	public Date getTimeStamp() {
-		// SimpleDateFormat sdf = new SimpleDateFormat ("yyyy-MM-dd HH:mm:ss");
-		// return sdf.format(timeStamp);
 		return timeStamp;
 	}
 
@@ -53,20 +86,12 @@ public @Entity(noClassnameStored = true, value = "Carts") class Cart {
 		this.userId = userId;
 	}
 
-	public Collection<Product> getProductsFull() {
-		return products;
+	public Collection<CartItem> getCartItems() {
+		return items;
 	}
 
-	public Collection<String> getProductsSummary() {
-		ArrayList<String> s = new ArrayList<String>();
-		for (Product p : products) {
-			s.add(p.getGarbaId());
-		}
-		return s;
-	}
-
-	public void setProducts(Collection<Product> products) {
-		this.products = products;
+	public void setCartItems(Collection<CartItem> items) {
+		this.items = items;
 	}
 
 	public String getCartStatus() {

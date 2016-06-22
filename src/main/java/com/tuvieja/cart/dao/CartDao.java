@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.garbarino.monga.dao.BaseDao;
 import com.tuvieja.cart.dto.Cart;
-import com.tuvieja.cart.dto.Product;
+import com.tuvieja.cart.dto.CartItem;
 
 public @Repository class CartDao extends BaseDao<Cart, String> {
 
@@ -18,18 +18,25 @@ public @Repository class CartDao extends BaseDao<Cart, String> {
 		super(Cart.class, ds);
 	}
 
-	public Collection<Product> fetchAllItems(String cartId) {
-		return ((Cart) getDs().find(Cart.class).field("id").equal(new ObjectId(cartId)).get()).getProductsFull();
+	public Collection<CartItem> fetchAllItems(String cartId) {
+		return ((Cart) getDs().find(Cart.class)
+				.field("id").equal(new ObjectId(cartId))
+				.get())
+				.getCartItems();
 	}
 
 	// ver si funciona
 	public Collection<Cart> fetchByStatus(String id, String status) {
-		return getDs().find(Cart.class).field("id").equal(new ObjectId(id)).field("cart_status").equalIgnoreCase(status)
+		return getDs().find(Cart.class)
+				.field("id").equal(new ObjectId(id))
+				.field("cart_status").equalIgnoreCase(status)
 				.asList();
 	}
 
 	public Cart fetchOne(String id) {
-		return getDs().find(Cart.class).field("id").equal(new ObjectId(id)).get();
+		return getDs().find(Cart.class)
+				.field("id").equal(new ObjectId(id))
+				.get();
 	}
 
 	public void createCart(Cart cart) {
@@ -43,7 +50,7 @@ public @Repository class CartDao extends BaseDao<Cart, String> {
 		Cart updatedCart = fetchOne(id);
 		// lo edito con los datos que yo quiero que el usuario/plataforma pueda
 		updatedCart.setCartStatus("updated cart");
-		updatedCart.setProducts(cart.getProductsFull());
+		updatedCart.setCartItems(cart.getCartItems());
 		// persistir
 		getDs().save(updatedCart);
 	}

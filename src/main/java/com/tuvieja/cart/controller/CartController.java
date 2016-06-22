@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tuvieja.cart.dto.Cart;
+import com.tuvieja.cart.dto.CartItem;
 import com.tuvieja.cart.dto.CartLite;
 import com.tuvieja.cart.dto.Generic;
-import com.tuvieja.cart.dto.Product;
 import com.tuvieja.cart.service.CartService;
 
 @RestController
@@ -22,12 +22,12 @@ public class CartController {
 	private @Resource CartService cs;
 
 	@RequestMapping(method = RequestMethod.GET)
-	public Collection<Cart> fetchAll() {
-		return cs.fetchAll();
+	public Collection<CartLite> fetchAllLite() {
+		return cs.fetchAllLite();
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "{id}")
-	public CartLite fetchOne(@PathVariable("id") String cartId) {
+	public CartLite fetchOneLite(@PathVariable("id") String cartId) {
 		if (hasValidId(cartId)) {
 			return cs.fetchOneLite(cartId);
 		}
@@ -56,17 +56,35 @@ public class CartController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "{id}/items")
-	public Collection<Product> fetchAllItems(@PathVariable("id") String cartId) {
+	public Collection<CartItem> fetchAllItems(@PathVariable("id") String cartId) {
 		System.out.println ("{CARTS} fetching all items in cart (" + cartId + ") @ CARTCONTROLLER");
 		return cs.fetchAllItems(cartId);
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, value = "{id}/items")
-	public void addItemToCart(@PathVariable("id") String cartId, @RequestBody Generic product) {
-		System.out.println("{CARTS} adding product (" + product.getGarbaProduct() + ") @ CARTCONTROLLER");
+	public void addItemToCart(@PathVariable("id") String cartId, @RequestBody Generic newItem) {
+		System.out.println("{CARTS} adding " + newItem.getQuantity() + " product (" + newItem.getGarbaId() + ") @ CARTCONTROLLER");
 		//a ver si explota sin serializar..
-		if (hasValidId(cartId) && hasValidId(product.getGarbaProduct())) {
-			cs.addToCart(cartId, product.getGarbaProduct());
+		if (hasValidId(cartId) && hasValidId(newItem.getGarbaId()) && newItem.getQuantity() > 0) {
+			cs.addToCart(cartId, newItem);
+		}
+	}
+	
+	@RequestMapping(method = RequestMethod.PUT, value = "{id}/items")
+	public void updateItemInCart(@PathVariable("id") String cartId, @RequestBody Generic updateItem) {
+		System.out.println("{CARTS} updating " + updateItem.getQuantity() + " product (" + updateItem.getGarbaId() + ") @ CARTCONTROLLER");
+		//a ver si explota sin serializar..
+		if (hasValidId(cartId) && hasValidId(updateItem.getGarbaId())) {
+			cs.updateQuantity(cartId, updateItem);
+		}
+	}
+	
+	@RequestMapping(method = RequestMethod.DELETE, value = "{id}/items/{productid}")
+	public void removeItemFromCart(@PathVariable("id") String cartId, @PathVariable("productid") String productId) {
+		System.out.println("{CARTS} deleting product (" + productId + ") @ CARTCONTROLLER");
+		//a ver si explota sin serializar..
+		if (hasValidId(cartId) && hasValidId(productId)) {
+			cs.deleteFromCart(cartId, productId);
 		}
 	}
 
