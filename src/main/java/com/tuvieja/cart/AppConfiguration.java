@@ -5,11 +5,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.garbarino.gcommons.rest.RestConnectorBuilder;
 import com.garbarino.gcommons.rest.impl.RestConnector;
-import com.tuvieja.cart.service.CartService;
-import com.tuvieja.cart.service.ProductService;
-import com.tuvieja.cart.service.UserService;
+import com.garbarino.gcommons.serializers.config.ObjectMapperBuilder;
 
 @Configuration
 @ComponentScan({"com.garbarino.monga.*"})
@@ -20,6 +19,13 @@ public class AppConfiguration {
 	
 	@Value("${endpoints.apiCompu}")
 	private String apiCompu;
+	
+	
+	
+	@Bean
+	public ObjectMapper objectMapper() {
+		return ObjectMapperBuilder.standardObjectMapper().build();
+	}
 	
 	@Bean
 	public RestConnector compumundoRestConnector() {
@@ -34,19 +40,4 @@ public class AppConfiguration {
 				.withReadTimeout(30).build();
 	}
 
-	// preguntar a shima como arreglarlo
-	@Bean
-	public CartService cartService() {
-		return new CartService();
-	}
-	
-	@Bean
-	public UserService userService() {
-		return new UserService();
-	}
-	
-	@Bean
-	public ProductService productService() {
-		return new ProductService();
-	}
 }

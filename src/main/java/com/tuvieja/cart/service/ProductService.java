@@ -1,6 +1,7 @@
 package com.tuvieja.cart.service;
 
 import java.util.Collection;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
@@ -24,7 +25,7 @@ public class ProductService {
 	}
 	
 	public Product fetchOne (String productId){
-		GarbaProduct gp = pc.fetchOne(productId);
+		GarbaProduct gp = pc.fetchOne(productId).get();
 		return ProductTransform.fromGarba(gp);
 	}
 	

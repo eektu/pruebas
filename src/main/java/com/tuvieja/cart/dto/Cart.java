@@ -75,10 +75,18 @@ public @Entity(noClassnameStored = true, value = "Carts") class Cart {
 	public float getDiscount(){
 		float discount = 0f;
 		for (CartItem c : items){
-			discount += Discounter.getDiscount(c.getProduct().getPrice(), c.getQuantity());;
+			discount += Discounter.getDiscount(c.getProduct().getPrice(), c.getQuantity());
 		}
 		discount = Math.round(discount * 100) / 100f;
 		return discount;
+	}
+	
+	public float getTotal(){
+		float total = 0f;
+		for (CartItem c : items){
+			total += c.getProduct().getPrice() * c.getQuantity();
+		}
+		return total;
 	}
 	
 	public void setTimeStamp(Date timeStamp) {

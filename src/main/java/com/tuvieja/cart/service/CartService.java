@@ -1,26 +1,36 @@
 package com.tuvieja.cart.service;
 
+import static java.util.Optional.ofNullable;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
+import org.springframework.stereotype.Service;
+
+import com.garbarino.gcommons.rest.exception.ResourceNotFoundException;
 import com.tuvieja.cart.dao.CartDao;
+import com.tuvieja.cart.dao.TransactionDao;
 import com.tuvieja.cart.dto.Cart;
 import com.tuvieja.cart.dto.CartItem;
 import com.tuvieja.cart.dto.CartLite;
 import com.tuvieja.cart.dto.Generic;
+import com.tuvieja.cart.dto.PaymentInfo;
 import com.tuvieja.cart.dto.Product;
 import com.tuvieja.cart.service.utils.CartTransform;
 
+@Service
 public class CartService {
 	private @Resource CartDao cd;
+	private @Resource TransactionDao td;
 	private @Resource ProductService ps;
 
-	public Cart fetchOne(String cartId) {
-		return cd.fetchOne(cartId);
+	public Optional<Cart> fetchOne(String cartId) {
+		return ofNullable(cd.fetchOne(cartId));
 	}
 
 	public Collection<Cart> fetchAll() {
@@ -37,10 +47,17 @@ public class CartService {
 
 	public void deleteFromCart(String cartId, String productId) {
 		if (cd.itExists(cartId) && ps.itExists(productId)) {
-			Cart c = fetchOne(cartId);
-			c.removeAllFromCart(productId);
-			c.setCartStatus("cart updated");
-			cd.editCart(cartId, c);
+			Optional<Cart> c = fetchOne(cartId);
+
+			if (c.isPresent()) {
+				Cart cart = c.get();
+				cart.removeAllFromCart(productId);
+				cart.setCartStatus("cart updated");
+				cd.editCart(cartId, cart);
+			} else {
+				throw new ResourceNotFoundException();
+			}
+
 		}
 	}
 
@@ -49,10 +66,16 @@ public class CartService {
 			System.out.println("{CARTS} adding " + doomedItem.getQuantity() + " product (" + doomedItem.getGarbaId()
 					+ ") @ CARTSERVICE");
 
-			Cart c = fetchOne(cartId);
-			c.removeSomeFromCart(doomedItem.getGarbaId(), doomedItem.getQuantity());
-			c.setCartStatus("cart updated");
-			cd.editCart(cartId, c);
+			Optional<Cart> c = fetchOne(cartId);
+			
+			if (c.isPresent()){
+				Cart cart = c.get();
+				cart.removeSomeFromCart(doomedItem.getGarbaId(), doomedItem.getQuantity());
+				cart.setCartStatus("cart updated");
+				cd.editCart(cartId, cart);
+			}else{
+				throw new ResourceNotFoundException();
+			}
 		}
 	}
 
@@ -61,11 +84,17 @@ public class CartService {
 			System.out.println("{CARTS} adding " + newItem.getQuantity() + " product (" + newItem.getGarbaId()
 					+ ") @ CARTSERVICE");
 
-			Cart c = fetchOne(cartId);
+			Optional<Cart> c = fetchOne(cartId);
 			Product p = ps.fetchOne(newItem.getGarbaId());
-			c.addToCart(new CartItem(p, newItem.getQuantity()));
-
-			cd.editCart(cartId, c);
+			
+			if (c.isPresent()){
+				Cart cart = c.get();
+				
+				cart.addToCart(new CartItem(p, newItem.getQuantity()));
+				cd.editCart(cartId, cart);
+			}else{
+				throw new ResourceNotFoundException();
+			}
 		}
 	}
 
@@ -100,19 +129,33 @@ public class CartService {
 	}
 
 	public CartLite fetchOneLite(String cartId) {
-		return CartTransform.toLite(fetchOne(cartId));
+		Optional<Cart> c = fetchOne(cartId);
+
+		if (c.isPresent()) {
+			return CartTransform.toLite(c.get());
+		} else {
+			throw new ResourceNotFoundException();
+		}
 	}
 
 	public Collection<CartLite> fetchAllLite() {
 		return cd.fetchAll().stream().map(c -> CartTransform.toLite(c)).collect(Collectors.toList());
 	}
 
-	public float getDiscount(String cartId) {
-		float discount = 0f;
-		if (cd.itExists(cartId)){
+	public void buyCart(String cartId, PaymentInfo payment) {
+		if (cd.itExists(cartId)) {
+			System.out.println("{CARTS} buying cart (" + cartId + ") @ CARTSERVICE");
+
 			Cart c = cd.fetchOne(cartId);
-			discount = c.getDiscount();
+			if (c.getUserId().equals(payment.getUserId())) {
+				
+				c.setCartStatus("bought cart");
+				cd.editCart(cartId, c);
+				
+				payment.setDiscount(c.getDiscount());
+				payment.setTotal(c.getTotal());
+				td.createTransaction(payment);
+			}
 		}
-		return discount;
 	}
 }

@@ -17,13 +17,6 @@ public @Repository class UserDao extends BaseDao<User, String> {
 		super(User.class, ds);
 	}
 
-	public boolean exists(String id) {
-		if (fetchOne(id) != null) {
-			return true;
-		}
-		return false;
-	}
-
 	public boolean isTaken(User user) {
 		if (isNickNameTaken(user.getNickName()) || isEmailTaken(user.getEmail())) {
 			System.out.println("{USERDAO} the user already exists");

@@ -1,18 +1,24 @@
 package com.tuvieja.cart.service;
 
+import static java.util.Optional.ofNullable;
+
 import java.util.Collection;
 import java.util.Date;
+import java.util.Optional;
 
 import javax.annotation.Resource;
+
+import org.springframework.stereotype.Service;
 
 import com.tuvieja.cart.dao.UserDao;
 import com.tuvieja.cart.dto.User;
 
+@Service
 public class UserService {
 	private @Resource UserDao ud;
 
-	public User fetchOne(String id) {
-		return ud.fetchOne(id);
+	public Optional<User> fetchOne(String userId) {
+		return ofNullable(ud.fetchOne(userId));
 	}
 
 	public Collection<User> fetchAll() {
@@ -31,7 +37,7 @@ public class UserService {
 
 	public void userRecentlySeen(String id, User user) {
 		System.out.println("{USERS} '(" + user.getNickName() + ") recently seen' @ SERVICE");
-		if (ud.exists(id)) {
+		if (itExists(id)) {
 			user.setLastSeen(new Date());
 			ud.editUser(id, user);
 		}
@@ -44,8 +50,15 @@ public class UserService {
 
 	public void deleteUser(String id) {
 		System.out.println("{USERS} deleted user @ SERVICE");
-		if (ud.exists(id)) {
+		if (itExists(id)) {
 			ud.deleteUser(id);
 		}
+	}
+	
+	public boolean itExists (String userId){
+		if (fetchOne (userId).isPresent()){
+			return true;
+		}
+		return false;
 	}
 }

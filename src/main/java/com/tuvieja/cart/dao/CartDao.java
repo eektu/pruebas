@@ -41,16 +41,14 @@ public @Repository class CartDao extends BaseDao<Cart, String> {
 
 	public void createCart(Cart cart) {
 		this.save(cart);
-		// ver cómo identificar el carrito (posiblemente generando un nro de
-		// id/transacción)
 	}
 
 	public void editCart(String id, Cart cart) {
 		// pido carrito a la DB
 		Cart updatedCart = fetchOne(id);
 		// lo edito con los datos que yo quiero que el usuario/plataforma pueda
-		updatedCart.setCartStatus("updated cart");
 		updatedCart.setCartItems(cart.getCartItems());
+		updatedCart.setCartStatus(cart.getCartStatus());
 		// persistir
 		getDs().save(updatedCart);
 	}
