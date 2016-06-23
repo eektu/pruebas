@@ -11,9 +11,9 @@ import org.mongodb.morphia.annotations.Property;
 public class CartLite {
 	
 	private @Id ObjectId id;
-	private @Indexed String userId;
-	private @Property Date timeStamp;
-	private @Property String cartStatus;
+	private @Indexed @Property("user_id") String userId;
+	private @Property("time_stamp") Date timeStamp;
+	private @Property("cart_status") String cartStatus;
 	
 	public CartLite (){
 	}

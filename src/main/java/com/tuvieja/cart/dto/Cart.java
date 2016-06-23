@@ -19,10 +19,10 @@ import com.tuvieja.cart.utils.Discounter;
 public @Entity(noClassnameStored = true, value = "Carts") class Cart {
 
 	private @Id ObjectId id;
-	private @Indexed String userId;
-	private Collection<CartItem> items;
-	private @Property Date timeStamp;
-	private @Property String cartStatus;
+	private @Indexed @Property("user_id") String userId;
+	private @Property("items") Collection<CartItem> items;
+	private @Property("time_stamp") Date timeStamp;
+	private @Property("cart_status") String cartStatus;
 
 	public Cart() {
 		this.items = new ArrayList<CartItem>();

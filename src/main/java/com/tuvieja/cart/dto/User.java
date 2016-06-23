@@ -12,22 +12,22 @@ import org.mongodb.morphia.annotations.Property;
 public @Entity(noClassnameStored = true, value = "Users") class User {
 	
 	private @Id ObjectId id;
-	private @Indexed String nick_name;
-	private @Property String name;
-	private @Indexed String email;
-	private @Property Date sign_up_date;
-	private @Property Date last_seen;
+	private @Indexed @Property("nick_name") String nickName;
+	private @Indexed @Property("email") String email;
+	private @Property("name") String name;
+	private @Property("sign_up_date") Date signUpDate;
+	private @Property("last_seen") Date lastSeen;
 
 	public User() {
 		this.name = "default name";
-		this.nick_name = "default nick";
+		this.nickName = "default nick";
 		this.email = "default email";
 	}
 
 	public User(ObjectId id, String name, String nickName, String email) {
 		this.id = id;
 		this.name = name;
-		this.nick_name = nickName;
+		this.nickName = nickName;
 		this.email = email;
 	}
 	
@@ -40,11 +40,11 @@ public @Entity(noClassnameStored = true, value = "Users") class User {
 	}
 
 	public String getNickName() {
-		return nick_name;
+		return nickName;
 	}
 
 	public void setNickName(String nickName) {
-		this.nick_name = nickName;
+		this.nickName = nickName;
 	}
 
 	public String getEmail() {
@@ -57,20 +57,20 @@ public @Entity(noClassnameStored = true, value = "Users") class User {
 
 	public String getSignUpDate() {
 		SimpleDateFormat sdf = new SimpleDateFormat ("yyyy-MM-dd HH:mm:ss");
-		return sdf.format(sign_up_date);
+		return sdf.format(signUpDate);
 	}
 
 	public void setSignUpDate(Date timeStamp) {
-		this.sign_up_date = timeStamp;
+		this.signUpDate = timeStamp;
 	}
 
 	public String getLastSeen() {
 		SimpleDateFormat sdf = new SimpleDateFormat ("yyyy-MM-dd HH:mm:ss");
-		return sdf.format(last_seen);
+		return sdf.format(lastSeen);
 	}
 
 	public void setLastSeen(Date lastSeen) {
-		this.last_seen = lastSeen;
+		this.lastSeen = lastSeen;
 	}
 
 	public void setName(String name) {

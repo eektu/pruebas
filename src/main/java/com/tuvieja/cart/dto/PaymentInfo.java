@@ -4,15 +4,16 @@ import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 import org.mongodb.morphia.annotations.Indexed;
+import org.mongodb.morphia.annotations.Property;
 
 public @Entity(noClassnameStored = true, value = "Transactions") class PaymentInfo {
 
 	private @Id ObjectId id;
-	private @Indexed String userId;
-	private String method;
-	private int installments;
-	private float total;
-	private float discount;
+	private @Indexed @Property("user_id") String userId;
+	private @Property("method") String method;
+	private @Property("installments") int installments;
+	private @Property("total") float total;
+	private @Property("discount") float discount;
 
 	public PaymentInfo (){}
 	public PaymentInfo (String userId, String method, int installments, float total, float discount){
