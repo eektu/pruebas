@@ -34,8 +34,8 @@ public class CartService {
 			addToCart(cartId, itemUpdate);
 		}
 	}
-	
-	public void deleteFromCart(String cartId, String productId){
+
+	public void deleteFromCart(String cartId, String productId) {
 		if (cd.itExists(cartId) && ps.itExists(productId)) {
 			Cart c = fetchOne(cartId);
 			c.removeAllFromCart(productId);
@@ -104,16 +104,15 @@ public class CartService {
 	}
 
 	public Collection<CartLite> fetchAllLite() {
-		return cd.fetchAll().stream()
-				.map(c -> CartTransform.toLite(c)).collect(Collectors.toList());
+		return cd.fetchAll().stream().map(c -> CartTransform.toLite(c)).collect(Collectors.toList());
 	}
 
-	// public float getDiscount (String cartId) {
-	// Cart cart = fetchOne (cartId);
-	// float discount = 0f;
-	// for (Product p : cart.getCartProducts()){
-	// discount += Math.random() * p.getPrice();
-	// }
-	// return discount;
-	// }
+	public float getDiscount(String cartId) {
+		float discount = 0f;
+		if (cd.itExists(cartId)){
+			Cart c = cd.fetchOne(cartId);
+			discount = c.getDiscount();
+		}
+		return discount;
+	}
 }

@@ -10,6 +10,8 @@ import org.mongodb.morphia.annotations.Id;
 import org.mongodb.morphia.annotations.Indexed;
 import org.mongodb.morphia.annotations.Property;
 
+import com.tuvieja.cart.utils.Discounter;
+
 /*
  * cartStatus: {"cart created", "cart updated", "cart bought"}
  */
@@ -47,7 +49,7 @@ public @Entity(noClassnameStored = true, value = "Carts") class Cart {
 				if (c.getQuantity() > quantity){
 					c.setQuantity(c.getQuantity() + quantity);
 				}else{
-					c.setQuantity(0);;
+					c.setQuantity(0);
 				}
 			}
 			if (c.getQuantity() > 0){
@@ -69,7 +71,16 @@ public @Entity(noClassnameStored = true, value = "Carts") class Cart {
 			items.add(ci);
 		}
 	}
-
+	
+	public float getDiscount(){
+		float discount = 0f;
+		for (CartItem c : items){
+			discount += Discounter.getDiscount(c.getProduct().getPrice(), c.getQuantity());;
+		}
+		discount = Math.round(discount * 100) / 100f;
+		return discount;
+	}
+	
 	public void setTimeStamp(Date timeStamp) {
 		this.timeStamp = timeStamp;
 	}

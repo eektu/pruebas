@@ -47,18 +47,24 @@ public class CartController {
 			cs.editCart(cartId, cart);
 		}
 	}
-
+	
 	@RequestMapping(method = RequestMethod.DELETE, value = "{id}")
 	public void deleteCart(@PathVariable("id") String cartId) {
 		if (hasValidId(cartId)) {
 			cs.deleteCart(cartId);
 		}
 	}
-
+	
 	@RequestMapping(method = RequestMethod.GET, value = "{id}/items")
 	public Collection<CartItem> fetchAllItems(@PathVariable("id") String cartId) {
 		System.out.println ("{CARTS} fetching all items in cart (" + cartId + ") @ CARTCONTROLLER");
 		return cs.fetchAllItems(cartId);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "{id}/discount")
+	public float getCartDiscount(@PathVariable("id") String cartId) {
+		System.out.println ("{CARTS} calculating (" + cartId + ") discount @ CARTCONTROLLER");
+		return cs.getDiscount(cartId);
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, value = "{id}/items")
