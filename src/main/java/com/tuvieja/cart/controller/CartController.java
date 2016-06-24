@@ -12,7 +12,6 @@ import javax.annotation.Resource;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.garbarino.gcommons.rest.BaseController;
@@ -62,16 +61,24 @@ public class CartController extends BaseController{
 		}
 	}
 	
-	@RequestMapping(method = GET, value = "{id}/items")
-	public Collection<CartItem> fetchAllItems(@PathVariable("id") String cartId) {
-		System.out.println ("{CARTS} fetching all items in cart (" + cartId + ") @ CARTCONTROLLER");
-		return cs.fetchAllItems(cartId);
-	}
-	
 	@RequestMapping(method = GET, value = "{id}/discount")
 	public float getCartDiscount(@PathVariable("id") String cartId) {
 		System.out.println ("{CARTS} calculating (" + cartId + ") discount @ CARTCONTROLLER");
 		return cs.fetchOne(cartId).get().getDiscount();
+	}
+	
+	@RequestMapping(method = POST, value = "{id}/buy")
+	public void buyCart(@PathVariable("id") String cartId, @RequestBody PaymentInfo payment) {
+		System.out.println("{CARTS} buying cart (" + cartId + ") " + payment.getMethod() + ", " + payment.getInstallments() + " cuotas @ CARTCONTROLLER");
+		if (hasValidId(cartId)) {
+			cs.buyCart(cartId, payment);
+		}
+	}
+	
+	@RequestMapping(method = GET, value = "{id}/items")
+	public Collection<CartItem> fetchAllItems(@PathVariable("id") String cartId) {
+		System.out.println ("{CARTS} fetching all items in cart (" + cartId + ") @ CARTCONTROLLER");
+		return cs.fetchAllItems(cartId);
 	}
 	
 	@RequestMapping(method = POST, value = "{id}/items")
@@ -80,14 +87,6 @@ public class CartController extends BaseController{
 		//a ver si explota sin serializar..
 		if (hasValidId(cartId) && hasValidId(newItem.getGarbaId()) && newItem.getQuantity() > 0) {
 			cs.addToCart(cartId, newItem);
-		}
-	}
-	
-	@RequestMapping(method = POST, value = "{id}/buy")
-	public void buyCart(@PathVariable("id") String cartId, @RequestBody PaymentInfo payment) {
-		System.out.println("{CARTS} buying cart (" + cartId + ") " + payment.getMethod() + ", " + payment.getInstallments() + " cuotas @ CARTCONTROLLER");
-		if (hasValidId(cartId)) {
-			cs.buyCart(cartId, payment);
 		}
 	}
 	

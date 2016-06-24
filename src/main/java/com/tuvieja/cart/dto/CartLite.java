@@ -4,16 +4,13 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.bson.types.ObjectId;
-import org.mongodb.morphia.annotations.Id;
-import org.mongodb.morphia.annotations.Indexed;
-import org.mongodb.morphia.annotations.Property;
 
 public class CartLite {
 	
-	private @Id ObjectId id;
-	private @Indexed @Property("user_id") String userId;
-	private @Property("time_stamp") Date timeStamp;
-	private @Property("cart_status") String cartStatus;
+	private ObjectId id;
+	private String userId;
+	private Date timeStamp;
+	private String cartStatus;
 	
 	public CartLite (){
 	}

@@ -5,6 +5,7 @@ public class CartItem {
 	private int quantity;
 	
 	public CartItem (){
+		product = new Product();
 	}
 	
 	public CartItem (Product product, int quantity){
